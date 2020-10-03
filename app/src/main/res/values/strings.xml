@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Android MVP</string>
+    <string name="movies_empty">There are currently no movies in your watch list. Tap the button below to get started!</string>
+    <string name="movie_default_image">Movie default image</string>
+    <string name="movie_image">Movie image</string>
+    <string name="delete">Delete</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="release_date">Release Date</string>
+    <string name="add_movie">Add Movie</string>
+    <string name="search_for_a_movie">Search for a movie</string>
+    <string name="no_movies_found">No movies found</string>
+</resources>
