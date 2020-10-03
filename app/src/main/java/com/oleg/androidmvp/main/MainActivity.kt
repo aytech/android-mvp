@@ -7,10 +7,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.oleg.androidmvp.Configuration.Companion.ADD_MOVIE_ACTIVITY_REQUEST_CODE
 import com.oleg.androidmvp.R
 import com.oleg.androidmvp.add.AddMovieActivity
 import com.oleg.androidmvp.model.LocalDataSource
 import com.oleg.androidmvp.model.Movie
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
 
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
     }
 
     override fun displayMovies(movies: List<Movie>) {
+        Timber.d("Got movies: %s", movies)
         adapter.update(movies)
     }
 
@@ -64,12 +67,18 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == ADD_MOVIE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            displayMessage("Movie successfully added.")
+        } else {
+            displayMessage("Movie could not be added.")
+        }
+    }
+
     fun goToAddMovieActivity(view: View) {
         val intent = Intent(this@MainActivity, AddMovieActivity::class.java)
         startActivityForResult(intent, ADD_MOVIE_ACTIVITY_REQUEST_CODE)
-    }
-
-    companion object {
-        const val ADD_MOVIE_ACTIVITY_REQUEST_CODE = 1
     }
 }

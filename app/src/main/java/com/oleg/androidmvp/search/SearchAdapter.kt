@@ -6,12 +6,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.oleg.androidmvp.databinding.ItemMovieDetailsBinding
 import com.oleg.androidmvp.model.Movie
 
-class SearchAdapter(var movies: List<SearchViewModel>) :
+class SearchAdapter(
+    private var movies: List<SearchViewModel>,
+    private var listener: SearchActivity.RecyclerItemListener
+) :
     RecyclerView.Adapter<SearchAdapter.SearchMoviesHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchMoviesHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemMovieDetailsBinding.inflate(inflater)
+        val binding = ItemMovieDetailsBinding.inflate(inflater, parent, false)
         return SearchMoviesHolder(binding)
     }
 
@@ -20,12 +23,17 @@ class SearchAdapter(var movies: List<SearchViewModel>) :
 
     override fun getItemCount(): Int = movies.size
 
+    private fun onMovieClicked(movie: Movie) {
+        listener.onItemClick(movie)
+    }
+
     fun update(movies: List<Movie>?) {
         this.movies = movies!!.map {
             SearchViewModel(
                 title = it.title,
                 releaseDate = it.releaseDate,
-                posterPath = it.posterPath
+                posterPath = it.posterPath,
+                onClick = { onMovieClicked(it) }
             )
         }
         notifyDataSetChanged()
@@ -35,6 +43,7 @@ class SearchAdapter(var movies: List<SearchViewModel>) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(model: SearchViewModel) {
             binding.movie = model
+            binding.root.setOnClickListener { model.onClick() }
         }
     }
 }

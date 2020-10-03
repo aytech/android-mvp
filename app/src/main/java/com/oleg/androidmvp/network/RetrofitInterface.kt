@@ -9,6 +9,6 @@ interface RetrofitInterface {
     @GET("search/movie")
     fun searchMovie(
         @Query("api_key") api_key: String,
-        @Query("query") q: String
+        @Query("query") query: String
     ): Observable<TmdbResponse>
 }
