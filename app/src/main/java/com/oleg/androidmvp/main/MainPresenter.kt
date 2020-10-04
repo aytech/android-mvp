@@ -16,7 +16,7 @@ class MainPresenter(
     private val compositeDisposable = CompositeDisposable()
 
     private val myMovieObservable: Observable<List<Movie>>
-        get() = dataSource.allMovies
+        get() = dataSource.getAll()
     private val observer: DisposableObserver<List<Movie>>
         get() = object : DisposableObserver<List<Movie>>() {
             override fun onNext(movies: List<Movie>) {
@@ -45,14 +45,13 @@ class MainPresenter(
     }
 
     override fun onDeleteTapped(selectedMovies: HashSet<Movie>) {
+        if (selectedMovies.size < 1) {
+            viewInterface.displayMessage("Select a movie")
+        }
         for (movie in selectedMovies) {
             dataSource.delete(movie)
         }
-        if (selectedMovies.size == 1) {
-            viewInterface.displayMessage("Movie deleted")
-        } else if (selectedMovies.size > 1) {
-            viewInterface.displayMessage("Movies deleted")
-        }
+        viewInterface.onRemoveSelected(selectedMovies.size)
     }
 
     override fun stop() {

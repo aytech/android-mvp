@@ -19,7 +19,7 @@ open class Movie {
 
     @SerializedName("video")
     @Expose
-    var video: Boolean? = null
+    var video: Boolean? = false
 
     @ColumnInfo(name = "vote_count")
     @SerializedName("vote_average")
@@ -29,7 +29,7 @@ open class Movie {
     @ColumnInfo(name = "title")
     @SerializedName("title")
     @Expose
-    var title: String? = null
+    var title: String? = ""
 
     @SerializedName("popularity")
     @Expose
@@ -37,15 +37,15 @@ open class Movie {
 
     @SerializedName("poster_path")
     @Expose
-    var posterPath: String? = null
+    var posterPath: String? = ""
 
     @SerializedName("original_language")
     @Expose
-    var originalLanguage: String? = null
+    var originalLanguage: String? = ""
 
     @SerializedName("original_title")
     @Expose
-    var originalTitle: String? = null
+    var originalTitle: String? = ""
 
     @SerializedName("genre_ids")
     @Expose
@@ -54,26 +54,20 @@ open class Movie {
 
     @SerializedName("backdrop_path")
     @Expose
-    var backdropPath: String? = null
+    var backdropPath: String? = ""
 
     @SerializedName("adult")
     @Expose
-    var adult: Boolean? = null
+    var adult: Boolean? = false
 
     @SerializedName("overview")
     @Expose
-    var overview: String? = null
+    var overview: String? = ""
 
     @ColumnInfo(name = "release_date")
     @SerializedName("release_date")
     @Expose
-    var releaseDate: String? = null
-
-    /**
-     * No args constructor for use in serialization
-     *
-     */
-    @Ignore constructor() {}
+    var releaseDate: String? = ""
 
     /**
      * Constructor for manually added movies
@@ -88,7 +82,6 @@ open class Movie {
     /**
      *
      * @param genreIds
-     * @param id
      * @param title
      * @param releaseDate
      * @param overview
@@ -103,7 +96,6 @@ open class Movie {
      * @param popularity
      */
     constructor(
-        id: Int?,
         voteCount: Int?,
         video: Boolean?,
         voteAverage: Float?,

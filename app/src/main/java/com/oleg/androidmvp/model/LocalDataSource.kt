@@ -4,24 +4,21 @@ import android.app.Application
 import io.reactivex.Observable
 import kotlin.concurrent.thread
 
-open class LocalDataSource(application: Application) {
-    private val movieDao: MovieDao
-     open val allMovies: Observable<List<Movie>>
+class LocalDataSource(application: Application) {
 
-    init {
-        val db = LocalDatabase.getInstance(application)
-        movieDao = db.movieDao()
-        allMovies = movieDao.all
+    private val movieDao: MovieDao = LocalDatabase.getInstance(application).movieDao()
+
+    fun getAll(): Observable<List<Movie>> {
+        return movieDao.all
     }
 
-
-    open fun insert(movie: Movie) {
+    fun insert(movie: Movie) {
         thread {
             movieDao.insert(movie)
         }
     }
 
-    open fun delete(movie: Movie) {
+    fun delete(movie: Movie) {
         thread {
             movieDao.delete(movie.id)
         }

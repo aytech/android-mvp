@@ -41,7 +41,6 @@
                 android:layout_marginStart="-60dp"
                 android:layout_marginLeft="-60dp"
                 android:contentDescription="@string/search_for_a_movie"
-                android:onClick="goToSearchMovieActivity"
                 android:paddingBottom="5dp"
                 android:src="@drawable/ic_search_black_24dp" />
         </LinearLayout>
@@ -71,12 +70,11 @@
             android:contentDescription="@string/movie_image" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/add_movie"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_double"
-            android:onClick="onClickAddMovie"
             android:text="@string/add_movie" />
-
     </LinearLayout>
 </ScrollView>

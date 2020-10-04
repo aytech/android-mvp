@@ -2,7 +2,6 @@ package com.oleg.androidmvp.add
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.oleg.androidmvp.Configuration.Companion.EXTRA_POSTER_PATH
@@ -21,11 +20,30 @@ class AddMovieActivity : AppCompatActivity(), AddMovieContract.ViewInterface {
 
     private lateinit var addMoviePresenter: AddMovieContract.PresenterInterface
 
+    private fun goToSearchMovieActivity() {
+        if (movie_title.text.isNullOrEmpty()) {
+            showToast("Enter query")
+        } else {
+            val intent = Intent(this@AddMovieActivity, SearchActivity::class.java)
+            intent.putExtra(SEARCH_QUERY, movie_title.text.toString())
+            startActivityForResult(intent, SEARCH_MOVIE_ACTIVITY_REQUEST_CODE)
+        }
+    }
+
+    private fun onClickAddMovie() {
+        val title: String = movie_title.text.toString()
+        val releaseDate: String = movie_release_date.text.toString()
+        val posterPath: String = if (movie_image.tag == null) "" else movie_image.tag.toString()
+        addMoviePresenter.addMovie(title, releaseDate, posterPath)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_movie)
 
         addMoviePresenter = AddMoviePresenter(this, LocalDataSource(application))
+        search_button.setOnClickListener { goToSearchMovieActivity() }
+        add_movie.setOnClickListener { onClickAddMovie() }
     }
 
     override fun returnToMain() {
@@ -39,19 +57,6 @@ class AddMovieActivity : AppCompatActivity(), AddMovieContract.ViewInterface {
 
     override fun displayError(string: String) {
         showToast(string)
-    }
-
-    fun goToSearchMovieActivity(view: View) {
-        val intent = Intent(this@AddMovieActivity, SearchActivity::class.java)
-        intent.putExtra(SEARCH_QUERY, movie_title.text.toString())
-        startActivityForResult(intent, SEARCH_MOVIE_ACTIVITY_REQUEST_CODE)
-    }
-
-    fun onClickAddMovie(view: View) {
-        val title: String = movie_title.text.toString()
-        val releaseDate: String = movie_release_date.text.toString()
-        val posterPath: String = if (movie_image.tag == null) "" else movie_image.tag.toString()
-        addMoviePresenter.addMovie(title, releaseDate, posterPath)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

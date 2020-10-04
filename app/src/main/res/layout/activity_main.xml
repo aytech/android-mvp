@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".main.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movies_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     <LinearLayout
         android:id="@+id/no_movies_layout"
@@ -18,7 +20,8 @@
         android:layout_marginStart="@dimen/dp_quad"
         android:layout_marginEnd="@dimen/dp_quad"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="200dp"
@@ -39,7 +42,6 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -48,4 +50,4 @@
         android:tint="@android:color/white"
         app:srcCompat="@android:drawable/ic_input_add" />
 
-</FrameLayout>
+</merge>

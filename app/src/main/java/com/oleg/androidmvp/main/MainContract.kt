@@ -13,6 +13,7 @@ class MainContract {
         fun displayMessage(message: String)
         fun displayMovies(movies: List<Movie>)
         fun displayNoMovie()
+        fun onRemoveSelected(size: Int)
         fun onMoviesLoadComplete()
     }
 }

@@ -57,11 +57,11 @@ class SearchActivity : AppCompatActivity(), SearchContract.ViewInterface {
         super.onStart()
         progress_bar.visibility = GONE
 
-        val movies = ArrayList<Movie>()
-        movies.add(Movie("Title1", "2020-09-12", "/9MaAzW8sERDcIEYORE7jzeCew3P.jpg"))
-        movies.add(Movie("Title2", "2020-09-12", "/9MaAzW8sERDcIEYORE7jzeCew3P.jpg"))
-        viewAdapter.update(movies)
-        // searchPresenter.getSearchResults(query = query)
+        if (query.isEmpty()) {
+            displayError("Enter query")
+        } else {
+            searchPresenter.getSearchResults(query = query)
+        }
     }
 
     override fun onStop() {

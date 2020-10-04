@@ -13,7 +13,11 @@
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dp_single">
+        android:layout_marginStart="@dimen/dp_single"
+        android:layout_marginLeft="@dimen/dp_single"
+        android:layout_marginTop="@dimen/dp_single"
+        android:layout_marginEnd="@dimen/dp_single"
+        android:layout_marginRight="@dimen/dp_single">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -28,12 +32,14 @@
                 android:layout_marginRight="@dimen/dp_half"
                 android:contentDescription="@string/movie_image"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tmdbImage="@{movie.posterPath}" />
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:text="@{movie.title}"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@+id/movie_image"
@@ -45,6 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_half"
+                android:text="@{movie.releaseDate}"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@+id/title"
                 app:layout_constraintRight_toLeftOf="@id/checkbox"
@@ -54,6 +61,7 @@
                 android:id="@+id/checkbox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:checked="@{movie.checked}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

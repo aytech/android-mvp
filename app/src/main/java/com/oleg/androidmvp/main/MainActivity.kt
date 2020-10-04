@@ -2,22 +2,24 @@ package com.oleg.androidmvp.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.oleg.androidmvp.Configuration.Companion.ADD_MOVIE_ACTIVITY_REQUEST_CODE
 import com.oleg.androidmvp.R
 import com.oleg.androidmvp.add.AddMovieActivity
 import com.oleg.androidmvp.model.LocalDataSource
 import com.oleg.androidmvp.model.Movie
+import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
 
-    private lateinit var moviesRecyclerView: RecyclerView
-    private lateinit var adapter: MainAdapter
+    private lateinit var viewAdapter: MainAdapter
 
     private lateinit var mainPresenter: MainContract.PresenterInterface
 
@@ -25,8 +27,15 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        adapter = MainAdapter(listOf())
+        viewAdapter = MainAdapter(listOf())
         mainPresenter = MainPresenter(this, LocalDataSource(application))
+        supportActionBar?.title = "Movies to watch"
+        movies_recyclerview.apply { adapter = viewAdapter }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
     }
 
     override fun onStart() {
@@ -35,7 +44,7 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
     }
 
     override fun displayError(error: Throwable) {
-        // TODO: "Not yet implemented"
+        error.message?.let { displayMessage(it) }
     }
 
     override fun displayMessage(message: String) {
@@ -43,16 +52,27 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
     }
 
     override fun displayMovies(movies: List<Movie>) {
-        Timber.d("Got movies: %s", movies)
-        adapter.update(movies)
+        movies_recyclerview.visibility = VISIBLE
+        no_movies_layout.visibility = GONE
+        viewAdapter.update(movies)
     }
 
     override fun displayNoMovie() {
-        // TODO: "Not yet implemented"
+        movies_recyclerview.visibility = GONE
+        no_movies_layout.visibility = VISIBLE
+    }
+
+    override fun onRemoveSelected(size: Int) {
+        viewAdapter.removeSelected()
+        if (size == 1) {
+            displayMessage("Movie deleted")
+        } else if (size > 1) {
+            displayMessage("Movies deleted")
+        }
     }
 
     override fun onMoviesLoadComplete() {
-        // TODO: "Not yet implemented"
+        Timber.d("Movies loaded")
     }
 
     override fun onStop() {
@@ -62,7 +82,7 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.deleteMenuItem) {
-            mainPresenter.onDeleteTapped(adapter.selectedMovies)
+             mainPresenter.onDeleteTapped(viewAdapter.selectedMovies)
         }
         return super.onOptionsItemSelected(item)
     }

@@ -5,24 +5,27 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.oleg.androidmvp.databinding.ItemMovieMainBinding
 import com.oleg.androidmvp.model.Movie
+import kotlinx.android.synthetic.main.item_movie_main.view.*
 
-class MainAdapter(private var movies: List<MainViewModel>) :
+class MainAdapter(private var movieModels: List<MainViewModel>) :
     RecyclerView.Adapter<MainAdapter.MoviesHolder>() {
 
-    val selectedMovies = HashSet<Movie>()
+    private lateinit var movies: List<Movie>
+    internal val selectedMovies = HashSet<Movie>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ItemMovieMainBinding.inflate(inflater)
+        val binding = ItemMovieMainBinding.inflate(inflater, parent, false)
         return MoviesHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MoviesHolder, position: Int) =
-        holder.bind(movie = movies[position])
+        holder.bind(movieModel = movieModels[position])
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = movieModels.size
 
-    private fun selectMovie(movie: Movie) {
+    private fun selectMovie(position: Int) {
+        val movie = movies[position]
         if (selectedMovies.contains(movie)) {
             selectedMovies.remove(movie)
         } else {
@@ -31,21 +34,27 @@ class MainAdapter(private var movies: List<MainViewModel>) :
     }
 
     fun update(movies: List<Movie>) {
-        this.movies = movies.map {
+        this.movieModels = movies.map {
             MainViewModel(
                 title = it.title,
                 releaseDate = it.releaseDate,
                 posterPath = it.posterPath,
-                onClick = { selectMovie(it) }
+                checked = false
             )
         }
+        this.movies = movies
         notifyDataSetChanged()
+    }
+
+    fun removeSelected() {
+        selectedMovies.clear()
     }
 
     inner class MoviesHolder(private val binding: ItemMovieMainBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: MainViewModel) {
-            binding.movie = movie
+        fun bind(movieModel: MainViewModel) {
+            binding.movie = movieModel
+            binding.root.checkbox.setOnClickListener { selectMovie(adapterPosition) }
         }
     }
 }

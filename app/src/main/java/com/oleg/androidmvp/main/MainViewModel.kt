@@ -4,5 +4,5 @@ data class MainViewModel(
     val title: String?,
     val releaseDate: String?,
     val posterPath: String?,
-    val onClick: () -> Unit
+    val checked: Boolean
 )
