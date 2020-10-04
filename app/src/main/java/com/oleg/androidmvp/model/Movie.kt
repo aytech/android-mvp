@@ -73,7 +73,8 @@ open class Movie {
      * Constructor for manually added movies
      *
      */
-    @Ignore constructor(title: String, releaseDate: String, posterPath: String) {
+    @Ignore
+    constructor(title: String, releaseDate: String, posterPath: String) {
         this.title = title
         this.releaseDate = releaseDate
         this.posterPath = posterPath
@@ -82,6 +83,7 @@ open class Movie {
     /**
      *
      * @param genreIds
+     * @param id
      * @param title
      * @param releaseDate
      * @param overview
@@ -96,6 +98,7 @@ open class Movie {
      * @param popularity
      */
     constructor(
+        id: Int?,
         voteCount: Int?,
         video: Boolean?,
         voteAverage: Float?,

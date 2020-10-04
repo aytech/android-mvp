@@ -7,9 +7,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 open class RemoteDataSource {
-    open fun searchResultsObservable(query: String): Observable<TmdbResponse> {
+    open fun searchResultsObservable(queryString: String): Observable<TmdbResponse> {
         return RetrofitClient.moviesApi
-            .searchMovie(TMDB_API_KEY, query)
+            .searchMovie(api_key = TMDB_API_KEY, query = queryString)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -4,33 +4,37 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.oleg.androidmvp.BaseActivity
 import com.oleg.androidmvp.Configuration.Companion.ADD_MOVIE_ACTIVITY_REQUEST_CODE
 import com.oleg.androidmvp.R
 import com.oleg.androidmvp.add.AddMovieActivity
-import com.oleg.androidmvp.model.LocalDataSource
 import com.oleg.androidmvp.model.Movie
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
+class MainActivity : BaseActivity(), MainContract.ViewInterface {
 
     private lateinit var viewAdapter: MainAdapter
 
     private lateinit var mainPresenter: MainContract.PresenterInterface
+
+    private fun goToAddMovieActivity() {
+        val intent = Intent(this@MainActivity, AddMovieActivity::class.java)
+        startActivityForResult(intent, ADD_MOVIE_ACTIVITY_REQUEST_CODE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         viewAdapter = MainAdapter(listOf())
-        mainPresenter = MainPresenter(this, LocalDataSource(application))
+        mainPresenter = MainPresenter(this, localDataSource)
         supportActionBar?.title = "Movies to watch"
         movies_recyclerview.apply { adapter = viewAdapter }
+        fab_add.setOnClickListener { goToAddMovieActivity() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.deleteMenuItem) {
-             mainPresenter.onDeleteTapped(viewAdapter.selectedMovies)
+            mainPresenter.onDeleteTapped(viewAdapter.selectedMovies)
         }
         return super.onOptionsItemSelected(item)
     }
@@ -95,10 +99,5 @@ class MainActivity : AppCompatActivity(), MainContract.ViewInterface {
         } else {
             displayMessage("Movie could not be added.")
         }
-    }
-
-    fun goToAddMovieActivity(view: View) {
-        val intent = Intent(this@MainActivity, AddMovieActivity::class.java)
-        startActivityForResult(intent, ADD_MOVIE_ACTIVITY_REQUEST_CODE)
     }
 }

@@ -1,14 +1,21 @@
 package com.oleg.androidmvp.add
 
-import com.oleg.androidmvp.model.LocalDataSource
+import com.oleg.androidmvp.LocalDatabase
 import com.oleg.androidmvp.model.Movie
+import kotlin.concurrent.thread
 
-class AddMoviePresenter(private var viewInterface: AddMovieContract.ViewInterface, private var dataSource: LocalDataSource) : AddMovieContract.PresenterInterface {
+class AddMoviePresenter(
+    private var viewInterface: AddMovieContract.ViewInterface,
+    private var localDataSource: LocalDatabase
+) : AddMovieContract.PresenterInterface {
+
     override fun addMovie(title: String, releaseDate: String, posterPath: String) {
         if (title.isEmpty()) {
             viewInterface.displayError("Movie title cannot be empty")
         } else {
-            dataSource.insert(Movie(title, releaseDate, posterPath))
+            thread {
+                localDataSource.movieDao().insert(Movie(title, releaseDate, posterPath))
+            }
             viewInterface.returnToMain()
         }
     }

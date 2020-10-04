@@ -1,18 +1,17 @@
-package com.oleg.androidmvp.model
+package com.oleg.androidmvp
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.oleg.androidmvp.model.Movie
+import com.oleg.androidmvp.model.MovieDao
 
 @Database(entities = [Movie::class], version = 1, exportSchema = false)
 abstract class LocalDatabase : RoomDatabase() {
-    // --- DAO ---
     abstract fun movieDao(): MovieDao
 
     companion object {
-
-        // --- SINGLETON ---
         @Volatile
         private var INSTANCE: LocalDatabase? = null
 
@@ -26,7 +25,7 @@ abstract class LocalDatabase : RoomDatabase() {
                     context.applicationContext,
                     LocalDatabase::class.java,
                     "Word_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

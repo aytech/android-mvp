@@ -3,7 +3,7 @@ package com.oleg.androidmvp.add
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.oleg.androidmvp.BaseActivity
 import com.oleg.androidmvp.Configuration.Companion.EXTRA_POSTER_PATH
 import com.oleg.androidmvp.Configuration.Companion.EXTRA_RELEASE_DATE
 import com.oleg.androidmvp.Configuration.Companion.EXTRA_TITLE
@@ -11,12 +11,11 @@ import com.oleg.androidmvp.Configuration.Companion.SEARCH_MOVIE_ACTIVITY_REQUEST
 import com.oleg.androidmvp.Configuration.Companion.SEARCH_QUERY
 import com.oleg.androidmvp.Configuration.Companion.TMDB_IMAGE_URL
 import com.oleg.androidmvp.R
-import com.oleg.androidmvp.model.LocalDataSource
 import com.oleg.androidmvp.search.SearchActivity
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_add_movie.*
 
-class AddMovieActivity : AppCompatActivity(), AddMovieContract.ViewInterface {
+class AddMovieActivity : BaseActivity(), AddMovieContract.ViewInterface {
 
     private lateinit var addMoviePresenter: AddMovieContract.PresenterInterface
 
@@ -41,7 +40,7 @@ class AddMovieActivity : AppCompatActivity(), AddMovieContract.ViewInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_movie)
 
-        addMoviePresenter = AddMoviePresenter(this, LocalDataSource(application))
+        addMoviePresenter = AddMoviePresenter(this, localDataSource)
         search_button.setOnClickListener { goToSearchMovieActivity() }
         add_movie.setOnClickListener { onClickAddMovie() }
     }
