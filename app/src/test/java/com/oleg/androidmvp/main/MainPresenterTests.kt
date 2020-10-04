@@ -28,7 +28,7 @@ class MainPresenterTests : BaseTest() {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private lateinit var mockDataSource: LocalDatabase
 
-    lateinit var mainPresenter: MainPresenter
+    private lateinit var mainPresenter: MainPresenter
 
     private val dummyMovies: List<Movie>
         get() {
@@ -42,7 +42,8 @@ class MainPresenterTests : BaseTest() {
 
     @Before
     fun setUp() {
-        mainPresenter = MainPresenter(viewInterface = mockActivity, localDataSource = mockDataSource)
+        mainPresenter =
+            MainPresenter(viewInterface = mockActivity, localDataSource = mockDataSource)
     }
 
     @Test
