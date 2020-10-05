@@ -48,17 +48,17 @@ class MainPresenter(
     }
 
     override fun onDeleteTapped(selectedMovies: HashSet<Movie>) {
-        if (selectedMovies.size < 1) {
+        if (selectedMovies.size >= 1) {
+            for (movie in selectedMovies) {
+                localDataSource.movieDao().delete(movie.id)
+            }
+            viewInterface.onRemoveSelected(selectedMovies.size)
+        } else {
             viewInterface.displayMessage("Select a movie")
         }
-        for (movie in selectedMovies) {
-            localDataSource.movieDao().delete(movie.id)
-        }
-        viewInterface.onRemoveSelected(selectedMovies.size)
     }
 
     override fun stop() {
         compositeDisposable.clear()
     }
-
 }
